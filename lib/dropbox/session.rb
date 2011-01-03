@@ -81,6 +81,9 @@ module Dropbox
                                       :request_token_path => "/#{Dropbox::VERSION}/oauth/request_token",
                                       :authorize_path => "/#{Dropbox::VERSION}/oauth/authorize",
                                       :access_token_path => "/#{Dropbox::VERSION}/oauth/access_token")
+    end
+    
+    def get_request_token    
       @request_token = @consumer.get_request_token
     end
 
@@ -145,6 +148,13 @@ module Dropbox
       authorize
     end
 
+    def access_token=(value)
+      if value.token and value.secret 
+        @access_token = value
+      else
+        raise(UnauthorizedError, "You need to authorize the Dropbox user before you can call API methods")
+      end
+    end
     # Returns the OAuth access_token which allows access to token and secret.
 
     def access_token
